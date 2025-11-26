@@ -8,6 +8,25 @@ rg_name = {
 
     }
 
+  },
+  rg2 = {
+    name       = "shahed-rg-02"
+    location   = "australiacentral"
+    managed_by = "shahed"
+    tags = {
+      cost = "finance"
+
+    },
+    rg3 = {
+    name       = "shahed-rg-03"
+    location   = "australiacentral"
+    managed_by = "shahed"
+    tags = {
+      cost = "finance"
+
+    }
+    }
+
   }
 
 }
@@ -173,3 +192,23 @@ bastion_hosts = {
     }
   }
 }
+# vnets = {
+#   vnet1 ={
+#     name = "shahed-vnet"
+#     location = "centralindia"
+#     resource_group_name = "shahed-rg-01"
+#     address_space = ["10.0.0.0/16"]
+#   }
+# # Subnets
+#     subnets = [
+#       {
+#         name             = "frontend-01-subnet"
+#         address_prefixes = ["10.2.1.0/24"]
+#       },
+#       {
+#         name             = "backend-01-subnet"
+#         address_prefixes = ["10.2.2.0/24"]
+#       }
+# ]
+# }
+

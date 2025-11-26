@@ -40,3 +40,9 @@ module "azurerm_public_ip" {
   depends_on = [ module.azurerm_resource_group ]
   
 }
+# module "azure_virtual_Network" {
+#   source = "./module/azurerm_virtual_Network"
+#   vnets = var.vnets
+#   depends_on = [ module.azurerm_resource_group ]
+  
+# }

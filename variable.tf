@@ -6,6 +6,9 @@ variable "mssql_databases" {}
 variable "bastion_hosts" {}
 variable "pips" {}
 variable "mssql_servers" {} 
+#variable "vnets" {}
+  
+
 
   
 
