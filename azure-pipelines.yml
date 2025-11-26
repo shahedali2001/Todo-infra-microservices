@@ -74,6 +74,7 @@ stages:
               $env:PATH = "$(Agent.ToolsDirectory)\tflint;$env:PATH"
               tflint --version
         - powershell: |
+              Write-Host "Using directory: $(System.DefaultWorkingDirectory)"
               cd "$(System.DefaultWorkingDirectory)"
               tflint --init
               tflint 
@@ -92,6 +93,7 @@ stages:
         - task: ManualValidation@1
           inputs:
             notifyUsers: 'mahesh.hrai.bpl@gmail.com'
+            instructions: "Please review and approve before continuing."
             approvers: 'approve'
 
   - stage: TerraformApply
