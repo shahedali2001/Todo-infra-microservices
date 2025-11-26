@@ -22,8 +22,8 @@ stages:
             backendAzureRmStorageAccountName: 'shahedstg881'
             backendAzureRmContainerName: 'tfscontainer'
             backendAzureRmKey: 'dev.terraform.tfstate'
-  
-  - stage: Terraform validate
+
+  - stage: TerraformValidate
     displayName: Terraform validate
     dependsOn:  terrafromInit
     jobs:
