@@ -87,6 +87,12 @@ stages:
     jobs:
       - job: WaitForApproval
         displayName: "Manual Validation"
+        pool: server
+        steps:
+        - task: ManualValidation@1
+          inputs:
+            notifyUsers: 'mahesh.hrai.bpl@gmail.com'
+            approvers: 'approve'
 
   - stage: TerraformApply
     displayName: Terraform apply after scan the code
