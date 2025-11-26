@@ -92,7 +92,7 @@ stages:
         steps:
         - task: ManualValidation@1
           inputs:
-            notifyUsers: 'mahesh.hrai.bpl@gmail.com'
+            notifyUsers: 'devops051980@outlook.com'
             instructions: "Please review and approve before continuing."
             approvers: 'approve'
 
