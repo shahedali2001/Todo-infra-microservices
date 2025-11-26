@@ -92,9 +92,8 @@ stages:
         steps:
         - task: ManualValidation@1
           inputs:
-            notifyUsers: 'devops051980@outlook.com'
             instructions: "Please review and approve before continuing."
-            approvers: 'approve'
+           
 
   - stage: TerraformApply
     displayName: Terraform apply after scan the code
