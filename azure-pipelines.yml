@@ -74,7 +74,7 @@ stages:
               $env:PATH = "$(Agent.ToolsDirectory)\tflint;$env:PATH"
               tflint --version
         - powershell: |
-              cd "$(System.DefaultWorkingDirectory)/dev"
+              cd "$(System.DefaultWorkingDirectory)"
               tflint --init
               tflint 
                  Write-Host "TFLint scan completed (warnings/errors ignored)."
