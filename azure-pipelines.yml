@@ -1,0 +1,37 @@
+trigger: 
+  branches:
+    include:
+      - feature/*
+    exclude:
+      - main
+pool: todo-app-infra
+stages:
+  - stage: terrafromInit
+    displayName: Terraform init
+    jobs:
+      - job: TerraformInit
+        displayName: Terraform init
+        steps:
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/'
+            backendServiceArm: 'shahedsvc'
+            backendAzureRmResourceGroupName: 'shahed-rg'
+            backendAzureRmStorageAccountName: 'shahedstg881'
+            backendAzureRmContainerName: 'tfscontainer'
+            backendAzureRmKey: 'dev.terraform.tfstate'
+  
+  - stage: Terraform validate
+    displayName: Terraform validate
+    dependsOn:  terrafromInit
+    jobs:
+      - job: TerraformValidate
+        displayName: terraform validate
+        steps:
+        - task: TerraformTask@5
+          inputs:
+            provider: 'azurerm'
+            command: 'validate'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/'
