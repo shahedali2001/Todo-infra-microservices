@@ -9,27 +9,8 @@ rg_name = {
     }
 
   },
-  rg2 = {
-    name       = "shahed-rg-02"
-    location   = "australiacentral"
-    managed_by = "shahed"
-    tags = {
-      cost = "finance"
-
-    },
-    rg3 = {
-    name       = "shahed-rg-03"
-    location   = "australiacentral"
-    managed_by = "shahed"
-    tags = {
-      cost = "finance"
-
-    }
-    }
-
-  }
-
 }
+    
 aks_cluster = {
   cluster1 = {
     name                = "shahed-dev-aks-cluster"
@@ -62,7 +43,6 @@ aks_cluster = {
     disable_smb_driver           = false
     generate_ssh_keys            = true
     ssh_key_value                = ""
-
     vnet_ids       = []
     vnet_subnet_id = ""
     # pod_cidr            = "10.244.0.0/16"
@@ -120,9 +100,19 @@ pips = {
       app = "bastion"
       env = "dev"
     }
+  },
+   appgw1 = {
+    name                = "appgw-pip"
+    resource_group_name = "shahed-rg-01"
+    location            = "centralindia"
+    allocation_method   = "Static"
+    sku                 = "Standard"
+     tags = {
+      app = "appgw"
+      env = "dev"
+}
   }
 }
-
 key_vaults = {
   kv1 = {
     name                        = "shahed-kv1"
@@ -192,23 +182,98 @@ bastion_hosts = {
     }
   }
 }
-# vnets = {
-#   vnet1 ={
-#     name = "shahed-vnet"
-#     location = "centralindia"
-#     resource_group_name = "shahed-rg-01"
-#     address_space = ["10.0.0.0/16"]
-#   }
-# # Subnets
-#     subnets = [
-#       {
-#         name             = "frontend-01-subnet"
-#         address_prefixes = ["10.2.1.0/24"]
-#       },
-#       {
-#         name             = "backend-01-subnet"
-#         address_prefixes = ["10.2.2.0/24"]
-#       }
-# ]
-# }
+vnets = {
+  vnet1 = {
+    vnet_name           = "shahed_vnet"
+    location            = "centralindia"
+    resource_group_name = "shahed-rg-01"
+    address_space       = ["10.0.0.0/16"]
+    dns_servers         = []  # optional
 
+    subnets = [
+      {
+        name             = "shahed-subnet"
+        address_prefixes = ["10.0.1.0/24"]
+      },
+      {
+        name             = "appgw-subnet"
+        address_prefixes = ["10.0.2.0/24"]
+      }
+    ]
+  }
+}
+application_gateways = {
+  appgw1 = {
+    name                = "shahed-appgw"
+    resource_group_name = "shahed-rg-01"
+    location            = "centralindia"
+
+    virtual_network_name = "shahed_vnet"
+
+    sku = {
+      name     = "Standard_v2"
+      tier     = "Standard_v2"
+      capacity = 1
+    }
+
+    gateway_ip_configuration = {
+      name        = "appgw-ipconfig"
+      subnet_name = "appgw-subnet"
+    }
+
+    frontend_ports = [
+      {
+        name = "frontendPort1"
+        port = 80
+      }
+    ]
+
+    frontend_ip_configurations = [
+      {
+        name = "frontendIPConfig1"
+      }
+    ]
+
+    backend_address_pools = [
+      {
+        name = "backendPool1"
+      }
+    ]
+
+    backend_http_settings = [
+      {
+        name                  = "httpSetting1"
+        cookie_based_affinity = "Disabled"
+        path                  = "/"
+        port                  = 80
+        protocol              = "Http"
+        request_timeout       = 60
+      }
+    ]
+
+    http_listeners = [
+      {
+        name                           = "httpListener1"
+        frontend_ip_configuration_name = "frontendIPConfig1"
+        frontend_port_name             = "frontendPort1"
+        protocol                       = "Http"
+      }
+    ]
+
+    request_routing_rules = [
+      {
+        name                       = "rule1"
+        priority                   = 9
+        rule_type                  = "Basic"
+        http_listener_name         = "httpListener1"
+        backend_address_pool_name  = "backendPool1"
+        backend_http_settings_name = "httpSetting1"
+      }
+    ]
+
+    tags = {
+      environment = "dev"
+      project     = "todo-infra"
+    }
+  }
+}

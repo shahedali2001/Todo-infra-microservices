@@ -13,8 +13,11 @@ variable "application_gateways" {
     })
 
     gateway_ip_configuration = object({
-      name = string
+      name        = string
+      subnet_name = string
     })
+
+    virtual_network_name = string
 
     frontend_ports = list(object({
       name = string
@@ -23,7 +26,8 @@ variable "application_gateways" {
 
     frontend_ip_configurations = list(object({
       name = string
-    }))
+     
+        }))
 
     backend_address_pools = list(object({
       name = string
@@ -56,4 +60,9 @@ variable "application_gateways" {
 
     tags = map(string)
   }))
+}
+variable "public_ip_ids" {
+  description = "Map of public IP resource IDs keyed by application gateway key"
+  type        = map(string)
+  default     = {}
 }
