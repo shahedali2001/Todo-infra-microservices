@@ -1,9 +1,3 @@
-variable "tags" {
-  description = "Tags to apply to the Application Gateway"
-  type        = map(string)
-  default     = {}
-}
-
 resource "azurerm_application_gateway" "App-Gateway" {
   for_each            = var.application_gateways
   name                = each.value.name
@@ -33,7 +27,7 @@ resource "azurerm_application_gateway" "App-Gateway" {
     for_each = each.value.frontend_ip_configurations
     content {
       name                 = frontend_ip_configuration.value.name
-      public_ip_address_id = data.azurerm_public_ip.datapip[each.key].id
+      public_ip_address_id = lookup(var.public_ip_ids, each.key, null)  # Must pass from public IP module
     }
   }
 
@@ -77,5 +71,6 @@ resource "azurerm_application_gateway" "App-Gateway" {
       backend_http_settings_name = request_routing_rule.value.backend_http_settings_name
     }
   }
-  tags = var.tags
+
+  tags = each.value.tags
 }
