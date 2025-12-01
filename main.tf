@@ -58,4 +58,5 @@ module "application_gateway" {
 module "azurerm_public_ip" {
   source = "./module/azurerm_public_ip"
   pips   = var.pips
+  depends_on = [ module.azurerm_resource_group ]
 }
