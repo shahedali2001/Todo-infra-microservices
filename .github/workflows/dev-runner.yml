@@ -1,19 +1,79 @@
-name: Test Self Hosted Runner
+name: Terraform CI
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
-  test:
-    runs-on: [self-hosted, Windows, X64]
+  terraform:
+    name: "Terraform Init, Validate, Plan, Tfsec Scan"
+    runs-on: self-hosted   # Your runner: DESKTOP-DH80DDE
 
     steps:
+      # -------------------------
+      # Checkout Repo
+      # -------------------------
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Print Info
+      # -------------------------
+      # Install Terraform
+      # -------------------------
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.2
+
+      # -------------------------
+      # Terraform Init
+      # -------------------------
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./terraform
+
+      # -------------------------
+      # Terraform Validate
+      # -------------------------
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: ./terraform
+
+      # -------------------------
+      # Terraform Plan
+      # -------------------------
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+        working-directory: ./terraform
+
+      # -------------------------
+      # Upload the plan artifact
+      # -------------------------
+      - name: Upload Terraform Plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: tfplan
+          path: ./terraform/tfplan
+
+      # -------------------------
+      # Install tfsec (Windows runner)
+      # -------------------------
+      - name: Install tfsec
         run: |
-          echo "Runner is working"
-          hostname
-          pwd
-          dir
+          choco install tfsec -y
+
+      # -------------------------
+      # Run tfsec Scan
+      # -------------------------
+      - name: Run tfsec Security Scan
+        run: tfsec .
+        working-directory: ./terraform
+
+      # -------------------------
+      # Format Check
+      # -------------------------
+      - name: Terraform FMT Check
+        run: terraform fmt -check -recursive
+        working-directory: ./terraform
+
