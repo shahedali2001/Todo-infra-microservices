@@ -26,9 +26,9 @@ stages:
             provider: 'azurerm'
             command: 'init'
             workingDirectory: '$(System.DefaultWorkingDirectory)/'
-            backendServiceArm: 'shahedsvc'
+            backendServiceArm: 'shahedado'
             backendAzureRmResourceGroupName: 'shahed-rg'
-            backendAzureRmStorageAccountName: 'shahedstg881'
+            backendAzureRmStorageAccountName: 'shahedstg1999'
             backendAzureRmContainerName: 'tfscontainer'
             backendAzureRmKey: 'dev.terraform.tfstate'
 
@@ -44,9 +44,9 @@ stages:
             provider: 'azurerm'
             command: 'init'
             workingDirectory: '$(System.DefaultWorkingDirectory)/'
-            backendServiceArm: 'shahedsvc'
+            backendServiceArm: 'shahedado'
             backendAzureRmResourceGroupName: 'shahed-rg'
-            backendAzureRmStorageAccountName: 'shahedstg881'
+            backendAzureRmStorageAccountName: 'shahedstg1999'
             backendAzureRmContainerName: 'tfscontainer'
             backendAzureRmKey: 'dev.terraform.tfstate'
 
@@ -60,7 +60,7 @@ stages:
             provider: 'azurerm'
             command: 'plan'
             workingDirectory: '$(System.DefaultWorkingDirectory)/'
-            environmentServiceNameAzureRM: 'shahedsvc'
+            environmentServiceNameAzureRM: 'shahedado'
 
   - stage: TerraformScan
     dependsOn: TerraformValidate
@@ -106,9 +106,9 @@ stages:
             provider: 'azurerm'
             command: 'init'
             workingDirectory: '$(System.DefaultWorkingDirectory)/'
-            backendServiceArm: 'shahedsvc'
+            backendServiceArm: 'shahedado'
             backendAzureRmResourceGroupName: 'shahed-rg'
-            backendAzureRmStorageAccountName: 'shahedstg881'
+            backendAzureRmStorageAccountName: 'shahedstg1999'
             backendAzureRmContainerName: 'tfscontainer'
             backendAzureRmKey: 'dev.terraform.tfstate'
         - task: TerraformTask@5
@@ -116,4 +116,4 @@ stages:
             provider: 'azurerm'
             command: 'apply'
             workingDirectory: '$(System.DefaultWorkingDirectory)/'
-            environmentServiceNameAzureRM: 'shahedsvc'
+            environmentServiceNameAzureRM: 'shahedado'
