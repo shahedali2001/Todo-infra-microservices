@@ -66,7 +66,7 @@ stages:
     dependsOn: TerraformValidate
     displayName: Terraform Scan
     jobs:
-      - job: TerraformScan
+      - job: tflintScan
         displayName: Verify TFLint installation
         steps:
         - powershell: |
@@ -80,6 +80,23 @@ stages:
                  Write-Host "TFLint scan completed (warnings/errors ignored)."
                   exit 0
           displayName: TFLint Scan
+      - job: tfescScan
+        displayName: TFsecScan
+        dependsOn: tflintScan
+        steps:
+        - task: tfsec@1
+          inputs:
+            version: 'v1.26.0'
+            dir: '(System.DefaultWorkingDirectory)/'
+
+
+  # - stage: Terratest
+  #   displayName: Terra Test
+  #   dependsOn: TerraformScan
+  #   jobs:
+  #     - job: Terratest
+        
+          
 
   - stage: ManualValidation
     displayName: "Manual Validation"
